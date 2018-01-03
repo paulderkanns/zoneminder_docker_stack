@@ -71,15 +71,15 @@ RUN { \
 #ENTRYPOINT ["docker-entrypoint.sh"]
 
 #Create same folder structure as in aptalca/zoneminder
-RUN mkdir -p /usr/share/zoneminder/db 
+#RUN mkdir -p /usr/share/zoneminder/db 
 
 #Copy zm_create.sql from root folder to container
-COPY zm_create.sql /usr/share/zoneminder/db/
+#COPY zm_create.sql /usr/share/zoneminder/db/
 
 #run mysql and execute zm_create.sql
 RUN service mysql restart && \ 
-cd /usr/share/zoneminder/db && \ 
-mysql -uroot < /usr/share/zoneminder/db/zm_create.sql && \  
-mysql -uroot -e "grant all on zm.* to 'zmuser'@localhost identified by 'zmpass';"
+#cd /usr/share/zoneminder/db && \ 
+#mysql -uroot < /usr/share/zoneminder/db/zm_create.sql && \  
+#mysql -uroot -e "grant all on zm.* to 'zmuser'@localhost identified by 'zmpass';"
 
 CMD ["mysqld"]

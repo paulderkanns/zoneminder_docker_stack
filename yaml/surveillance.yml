@@ -1,0 +1,42 @@
+zoneminder:
+  image: zoneminder:core 
+  deploy:
+	replicas: 2
+    	restart_policy:
+		condition: on-failure
+	placement:
+		constraints: [node.role == manager]
+  ressources:
+	limits:
+		cpus: "0.1"
+		memory: 500M
+  links:
+    - mysql 
+  ports:
+    - "80:80"
+  roles:
+    - global
+  volumes:
+    - /opt/zmdata:/config
+    - /etc/localtime:/etc/localtime:ro
+#web:
+#  image: dockercloud/quickstart-python
+#  links:
+#    - mysql 
+#  target_num_containers: 2 
+mysql:
+  image: zoneminder:mysql 
+  deploy:
+	replicas: 3 
+	restart_policy: 
+		condition: on-failure
+	placement:
+		constraints: [node.role == worker]
+  ressources:
+	limits:
+		cpus: "0.2"
+		memory: 1G
+  ports:
+    - "3306:3306"
+  volumes:
+    - /opt/zmdata/mysql_new:/var/lib/mysql
